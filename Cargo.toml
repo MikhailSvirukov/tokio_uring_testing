@@ -1,0 +1,22 @@
+[package]
+name = "uring_bench"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.47", features = ["full", "time"] }
+tokio-uring = "0.5.0"
+futures = "0.3"
+
+
+[[bin]]
+name = "uring"
+path = "uring/main.rs"
+
+[[bin]]
+name = "threads"
+path = "threads/main.rs"
+
+[[bin]]
+name = "tasks"
+path = "tasks/main.rs"
