@@ -9,7 +9,7 @@ async fn main() {
         .await
         .unwrap();
 
-    let writer = std::thread::spawn(|| create_writers());
+    let writer = std::thread::spawn(create_writers);
     let readers = tokio::spawn(async move {
         let sockets = prepare_readers(listener).await;
         let (tasks, start): (Vec<JoinHandle<()>>, Instant) = spawn_tasks(sockets);

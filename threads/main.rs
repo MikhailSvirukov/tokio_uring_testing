@@ -12,7 +12,7 @@ fn main() {
         spawn_threads(streams)
     });
 
-    std::thread::spawn(move || create_writers()).join().unwrap();
+    std::thread::spawn(create_writers).join().unwrap();
 
     let (handles, start): (Vec<JoinHandle<()>>, Instant) = reader.join().unwrap();
 
