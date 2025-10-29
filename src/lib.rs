@@ -1,7 +1,7 @@
 use std::io::Write;
 use std::thread::JoinHandle;
 
-pub const SOCKET_AMOUNT: usize = 100;
+pub const SOCKET_AMOUNT: usize = 50;
 pub const BLOCK_SIZE: usize = 1024 * 1024 * 256;
 
 pub fn create_writers() -> Vec<JoinHandle<()>> {

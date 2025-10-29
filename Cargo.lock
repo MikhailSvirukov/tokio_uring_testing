@@ -126,6 +126,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "io-uring"
+version = "0.7.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "046fa2d4d00aea763528b4950358d0ead425372445dc8ff86312b3c69ff7727b"
+dependencies = [
+ "bitflags 2.10.0",
+ "cfg-if",
+ "libc",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.177"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -312,7 +323,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "748482e3e13584a34664a710168ad5068e8cb1d968aa4ffa887e83ca6dd27967"
 dependencies = [
  "futures-util",
- "io-uring",
+ "io-uring 0.6.4",
  "libc",
  "slab",
  "socket2 0.4.10",
@@ -330,6 +341,7 @@ name = "uring_bench"
 version = "0.1.0"
 dependencies = [
  "futures",
+ "io-uring 0.7.10",
  "tokio",
  "tokio-uring",
 ]
