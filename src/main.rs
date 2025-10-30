@@ -1,3 +1,5 @@
+use std::io::Write;
+use std::thread::JoinHandle;
 use std::collections::HashMap;
 use std::os::fd::AsRawFd;
 use std::time::{Duration, Instant};
@@ -6,7 +8,21 @@ use io_uring::squeue::Entry;
 use io_uring::{IoUring, opcode, types};
 use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender};
 use tokio::sync::oneshot;
-use uring_bench::{BLOCK_SIZE, SOCKET_AMOUNT, create_writers};
+
+pub const SOCKET_AMOUNT: usize = 50;
+pub const BLOCK_SIZE: usize = 1024 * 1024;
+
+pub fn create_writers() -> Vec<JoinHandle<()>> {
+    let block: &'static [u8] = vec![7u8; BLOCK_SIZE].leak();
+    let mut vec = Vec::with_capacity(SOCKET_AMOUNT);
+    for _ in 0..SOCKET_AMOUNT {
+        let mut stream = std::net::TcpStream::connect("127.0.0.1:12456").unwrap();
+        vec.push(std::thread::spawn(move || {
+            let _ = stream.write_all(block);
+        }));
+    }
+    vec
+}
 
 #[tokio::main]
 async fn main() {
@@ -97,7 +113,7 @@ async fn start_tasks(
                     block[amount..].as_mut_ptr(),
                     BLOCK_SIZE as u32,
                 )
-                .build();
+                    .build();
                 let (send, recv) = oneshot::channel::<usize>();
                 value.send((read, send)).unwrap();
                 let res = recv.await.unwrap();
